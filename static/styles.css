@@ -1,0 +1,85 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(28, 15px);
+    grid-template-rows: repeat(28, 15px);
+    gap: 1px;
+    border: 1px solid #ccc;
+}
+.cell {
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border: 1px solid #eee;
+}
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #45a049;
+}
+
+#probabilities {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+}
+.prob-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.prob-number {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+.prob-bar {
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border: 1px solid #ccc;
+}
+
+#weights-b1 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1280px;
+    margin-top: 20px;
+}
+.weight-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+}
