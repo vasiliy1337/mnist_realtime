@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
-    <title>28x28 Grid Drawing with Probabilities</title>
+    <title>mnist websockets</title>
     <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
+    Click on the boxes below to load images from the dataset
     <div id="probabilities" aria-label="Digit probabilities">
         <!-- boxes will be dynamically added here -->
     </div>
@@ -19,6 +20,7 @@
     <div class="container">
         <div id="grid" aria-label="28x28 drawing grid"></div>
     </div>
+    You can draw with your mouse
 
     <button id="resetBtn">Reset</button>
 

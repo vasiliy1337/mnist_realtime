@@ -15,10 +15,11 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 # load model
 model = NNModel(weights_manager)
-checkpoint_path = weights_manager.get_checkpoint_with_best_accuracy()
-if checkpoint_path == "":
-    raise FileNotFoundError("Looks like you didn't have any checkpoints for model. Try to run 'train_model.py'")
-model.load_weights(checkpoint_path)
+# You can use a custom checkpoint; by default, the best checkpoint is used.
+# checkpoint_path = weights_manager.get_checkpoint_with_best_accuracy()
+# if checkpoint_path == "":
+#     raise FileNotFoundError("Looks like you didn't have any checkpoints for model. Run 'train_model.py'")
+model.init_weights(from_checkpoint=True)
 
 # load dataset
 dl = DatasetLoader()
@@ -26,12 +27,12 @@ X_train_path = './dataset/train-images.idx3-ubyte'
 y_train_path = './dataset/train-labels.idx1-ubyte'
 X_test_path = './dataset/t10k-images.idx3-ubyte'
 y_test_path = './dataset/t10k-labels.idx1-ubyte'
-dl.load_dataset(X_train_path, y_train_path, X_test_path, y_test_path)
+res = dl.load_dataset(X_train_path, y_train_path, X_test_path, y_test_path)
 dl.compute_cache()
 
 @app.route('/')
 def index():
-    return render_template('index.html')  # Frontend HTML file
+    return render_template('index.html')
 
 @socketio.on('user_interaction')
 def handle_input(data):

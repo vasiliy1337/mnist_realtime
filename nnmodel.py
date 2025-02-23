@@ -1,12 +1,11 @@
+from traceback import print_tb
+
 import numpy as np
 
 class NNModel:
     def __init__(self, wl):
         self.weights_loader = wl
         self.weights = None
-
-    def load_weights(self, weights_path):
-        self.weights = self.weights_loader.load_model(weights_path)
 
     def set_weights(self, weights):
         self.weights = weights
@@ -127,19 +126,27 @@ class NNModel:
         grads = {'dW1': dW1, 'db1': db1, 'dW2': dW2, 'db2': db2}
         return grads
 
+    def init_weights(self, from_checkpoint, checkpoint_path = ""):
+        self.weights = self._load_weights(from_checkpoint, checkpoint_path)
+
+    def _load_weights(self, from_checkpoint, checkpoint_path = "", input_size = 784, hidden_size = 128, output_size = 10):
+        """
+        Loads model weights from a checkpoint if available; otherwise, initializes new weights.
+        """
+        if from_checkpoint:
+            checkpoint_path = checkpoint_path or self.weights_loader.get_checkpoint_with_best_accuracy()
+            if checkpoint_path:
+                w = self.weights_loader.load_model(checkpoint_path)
+                if w is not None:
+                    return w
+            print("Checkpoints not found.")
+
+        return self._initialize_parameters(input_size, hidden_size, output_size)
+
     def train_nn(self, X, Y, input_size, hidden_size, output_size, epochs, learning_rate, from_checkpoint=False,
                  checkpoint_path=""):
 
-        if from_checkpoint:
-            checkpoint_path = checkpoint_path or self.weights_loader.get_checkpoint_with_best_accuracy()
-            if not checkpoint_path:
-                print("Checkpoints not found.")
-                self.weights = self._initialize_parameters(input_size, hidden_size, output_size)
-            else:
-                print(f"Loading from '{checkpoint_path}'")
-                self.weights = self.weights_loader.load_model(checkpoint_path)
-        else:
-            self.weights = self._initialize_parameters(input_size, hidden_size, output_size)
+        self.weights = self._load_weights(from_checkpoint, checkpoint_path, input_size, hidden_size, output_size)
 
         for epoch in range(epochs):
             Z1, A1, Z2, A2 = self._forward_propagation(X)
