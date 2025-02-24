@@ -1,3 +1,7 @@
+### MNIST Realtime
+
+This project is a Python-based implementation for real-time processing and classification of MNIST digits.
+
 ### Dataset Requirement
 
 This code requires the **MNIST dataset**. You can get it in two ways:

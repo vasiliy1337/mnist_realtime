@@ -5,7 +5,6 @@ import re
 
 path_to_mode_cache = "./model_cache/"
 
-# Save model weights to a file
 def save_model(weights, accuracy:int, name:str='model_weights'):
     """
     Saves weights using pickle (I know that this is dumb)
@@ -20,7 +19,6 @@ def save_model(weights, accuracy:int, name:str='model_weights'):
         pickle.dump(weights, f)
     print(f"Model saved to {filename}")
 
-# Load model weights from a file
 def load_model(filename:str='model_weights'):
     """
     Loads weights from giving filename

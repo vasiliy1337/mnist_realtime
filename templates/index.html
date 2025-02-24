@@ -10,15 +10,27 @@
 <body>
     Click on the boxes below to load images from the dataset
     <div id="probabilities" aria-label="Digit probabilities">
-        <!-- boxes will be dynamically added here -->
+        {% for i in range(10) %}
+            <div class="prob-box" onclick="on_label_press({{ i }})">
+                <span class="prob-number">{{ i }}</span>
+                <div class="prob-bar" id="prob-bar-{{ i }}"></div>
+            </div>
+        {% endfor %}
     </div>
 
     <div id="weights-b1" aria-label="Weights of b1 layer">
-        <!-- boxes will be dynamically added here -->
+        {% for i in range(128) %}
+            <div class="weight-box" id="weight-box-{{ i }}"></div>
+        {% endfor %}
     </div>
 
     <div class="container">
-        <div id="grid" aria-label="28x28 drawing grid"></div>
+        <div id="grid" aria-label="28x28 drawing grid">
+            {% for i in range(784) %}
+                <div class="cell" data-intensity='0'></div>
+            {% endfor %}
+        </div>
+        
     </div>
     You can draw with your mouse
 

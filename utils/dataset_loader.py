@@ -14,7 +14,7 @@ class DatasetLoader:
 
     def load_dataset(self, x_train_path: str, y_train_path: str, x_test_path: str, y_test_path: str) -> bool:
         """
-        Loads dataset from giving path.
+        Loads dataset from given path.
         :param x_train_path: Path to train images in idx3 format
         :param y_train_path: Path to train labels in idx1 format
         :param x_test_path: Path to test images in idx3 format
@@ -39,7 +39,7 @@ class DatasetLoader:
 
     def compute_cache(self, train: bool = False):
         """
-        Allows to do get random by label in constant time O(1)
+        Allows to get random image by label in constant time O(1)
         :param train: If 'False' use test part of dataset, otherwise use train part
         :return: None
         """
@@ -56,7 +56,7 @@ class DatasetLoader:
 
     def get_rand(self, label: int) -> ndarray | None:
         """
-        Get random image from dataset for giving label
+        Get random image from dataset for given label
         :param label: int, 0 <= label <= 9
         :return: ndarray if valid label, None otherwise
         """
