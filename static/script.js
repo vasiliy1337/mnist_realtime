@@ -6,9 +6,9 @@ const probContainer = document.getElementById('probabilities');
 const weightContainer = document.getElementById('weights-b1');
 
 const GRID_SIZE = 28;
-const CELL_SIZE = 10;
 
 let isDrawing = false;
+let doDiagonals = false;
 
 function clearGrid() {
     for (const cell of grid.children) {
@@ -29,7 +29,6 @@ function setCell(row, col, intensity) {
     }
 }
 
-// Draw a cell
 function updateCell(row, col, intensity) {
     const cell = getCell(row, col)
     const currentIntensity = parseFloat(cell.dataset.intensity);
@@ -49,19 +48,29 @@ function drawOnCell(row, col) {
             updateCell(r, c, 0.5);
         }
     });
+    if (doDiagonals) {
+        const diagonalCells = [
+            [row - 1, col - 1], [row + 1, col + 1],
+            [row + 1, col - 1], [row - 1, col + 1]
+        ];
+        diagonalCells.forEach(([r, c]) => {
+            if (r >= 0 && r < GRID_SIZE && c >= 0 && c < GRID_SIZE) {
+                updateCell(r, c, 0.2);
+            }
+        });
+    }
+    
+
     sendGridData();
 }
 
 function handleCellInteraction(e) {
-    if (e.target.classList.contains('cell')) {
-        const index = Array.from(grid.children).indexOf(e.target);
-        const row = Math.floor(index / GRID_SIZE);
-        const col = index % GRID_SIZE;
-        drawOnCell(row, col);
-    }
+    const index = Array.from(grid.children).indexOf(e.target);
+    const row = Math.floor(index / GRID_SIZE);
+    const col = index % GRID_SIZE;
+    drawOnCell(row, col);
 }
 
-// Send grid data to the server
 function sendGridData() {
     const gridData = Array.from(grid.children).map(cell => parseFloat(cell.dataset.intensity));
     socket.emit('user_interaction', { input: gridData });
@@ -71,10 +80,12 @@ function on_label_press(label) {
     socket.emit('get_rand_image', { label: label });
 }
 
-// Update probabilities
 function updateProbabilities(probabilities) {
-    const maxProb = Math.max(...probabilities);
-    const maxIndex = probabilities.indexOf(maxProb);
+    var maxIndex = -1
+    if (!probabilities.every(item => item === 0)) {
+        const maxProb = Math.max(...probabilities);
+        maxIndex = probabilities.indexOf(maxProb);
+    }
 
     probabilities.forEach((prob, index) => {
         const bar = document.getElementById(`prob-bar-${index}`);
@@ -85,18 +96,14 @@ function updateProbabilities(probabilities) {
 
         if (index === maxIndex) {
             number.style.color = 'white';
-            number.style.backgroundColor = `rgba(0, 255, 0, ${prob})`;
-            number.style.border = `2px solid rgba(0, 255, 0, ${prob})`;
+            number.style.backgroundColor = `rgba(95, 191, 255, ${prob})`;
         } else {
-            const textIntensity = prob > 0.9 ? 255 : 0;
-            number.style.color = `rgb(${textIntensity}, ${textIntensity}, ${textIntensity})`;
-            number.style.backgroundColor = `rgba(${255 - textIntensity}, ${255 - textIntensity}, ${255 - textIntensity}, ${prob})`;
-            number.style.border = `2px solid rgba(${255 - textIntensity}, ${255 - textIntensity}, ${255 - textIntensity}, ${prob})`;
+            number.style.color = `#000000`;
+            number.style.backgroundColor = `#ffffff`;
         }
     });
 }
 
-// Update weights
 function updateWeights(weights) {
     weights.forEach((weight, index) => {
         const bar = document.getElementById(`weight-box-${index}`);
@@ -104,7 +111,6 @@ function updateWeights(weights) {
         bar.style.backgroundColor = `rgb(${intensity}, ${intensity}, ${intensity})`;
     });
 }
-
 
 resetBtn.addEventListener('click', () => {
     clearGrid();
@@ -115,18 +121,22 @@ resetBtn.addEventListener('click', () => {
 grid.addEventListener('mousedown', (e) => {
     e.preventDefault();
     isDrawing = true;
-    handleCellInteraction(e);
 });
 
+let lastHoveredCell = null;
 grid.addEventListener('mousemove', (e) => {
     if (isDrawing) {
-        handleCellInteraction(e);
+        if (e.target !== lastHoveredCell) {
+            lastHoveredCell = e.target;
+            if (e.target.classList.contains('cell') && getComputedStyle(e.target).backgroundColor !== `rgb(0, 0, 0)`) {
+                handleCellInteraction(e);
+            }
+        }
     }
 });
 
 grid.addEventListener('mouseup', () => {
     isDrawing = false;
-    sendGridData();
 });
 
 grid.addEventListener('mouseleave', () => {

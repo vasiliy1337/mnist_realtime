@@ -8,14 +8,18 @@
     <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-    Click on the boxes below to load images from the dataset
-    <div id="probabilities" aria-label="Digit probabilities">
-        {% for i in range(10) %}
-            <div class="prob-box" onclick="on_label_press({{ i }})">
-                <span class="prob-number">{{ i }}</span>
-                <div class="prob-bar" id="prob-bar-{{ i }}"></div>
-            </div>
-        {% endfor %}
+    <div class="hint">
+        Click on the boxes below to load images from the dataset or use your mouse to draw a number
+    </div>
+    <div class="container">
+        <div id="probabilities" aria-label="Digit probabilities">
+            {% for i in range(10) %}
+                <div class="prob-box" onclick="on_label_press({{ i }})">
+                    <span class="prob-number">{{ i }}</span>
+                    <div class="prob-bar" id="prob-bar-{{ i }}"></div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
     <div id="weights-b1" aria-label="Weights of b1 layer">
@@ -32,8 +36,7 @@
         </div>
         
     </div>
-    You can draw with your mouse
-
+    
     <button id="resetBtn">Reset</button>
 
     <script src="static/script.js"></script>

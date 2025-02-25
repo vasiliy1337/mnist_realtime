@@ -7,7 +7,9 @@ body {
     margin: 0;
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
+    font-size: 18px;
 }
+
 .container {
     display: flex;
     flex-direction: column;
@@ -22,11 +24,13 @@ body {
     border: 2px solid #ccc;
     margin-top: 40px;
 }
+
 .cell {
     width: 15px;
     height: 15px;
     background-color: white;
 }
+
 button {
     margin-top: 20px;
     padding: 10px 20px;
@@ -36,32 +40,40 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
+
 button:hover {
-    background-color: #5fbfff;
+    background-color: #7acaff;
+    transform: scale(1.1);
 }
 
 #probabilities {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
+    padding: 0 2px;
     max-width: 600px;
     margin-top: 20px;
 }
+
 .prob-box {
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    
+    border-radius: 20%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
+
 .prob-number {
-    font-size: 18px;
-    font-weight: bold;
     margin-bottom: 5px;
     padding: 2px 5px;
     border-radius: 20%;
+    border: 2px solid #ccc;
 }
+
 .prob-bar {
     width: 60px;
     height: 60px;
@@ -77,10 +89,29 @@ button:hover {
     grid-template-rows: repeat(4, 15px);
     margin-top: 40px;
 }
+
 .weight-box {
     width: 15px;
     height: 15px;
     background-color: white;
     border: 2px solid #ccc;
     border-radius: 20%;
+}
+
+.hint {
+    background-color: #f0f8ff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #5fbfff;
+    max-width: 80%;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.hint:hover,
+.prob-box:hover {
+    background-color: #e1f5fe;
+    transform: scale(1.05);
 }
